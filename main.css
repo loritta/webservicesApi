@@ -1,0 +1,19 @@
+iframe{
+    width:100vw;
+    height:80vh;
+    frameborder:0;
+    border:0;
+}
+label,input{
+    font-size: 20px;
+}
+
+
+.searchCity{
+margin:5px;
+padding:20px;
+border:1px;
+border-style: solid;
+border-color: grey;
+background-color: yellow;
+}
