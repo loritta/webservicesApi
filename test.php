@@ -32,7 +32,7 @@
 
         <select id="selCity">
             <option value="">Please Select a City</option>
-            <option value="Montreal">Montreal</option>
+            <option value="Montreal">Greater Montreal</option>
             <option value="Toronto">Toronto</option>
         </select>
 
@@ -46,6 +46,8 @@
                 <th>Event Name</th>
                 <th>Start Date</th>
                 <th>End Date</th>
+                <th>City</th>
+                <th>Address</th>
             </tr>
             
         </table>
@@ -92,7 +94,9 @@
 
                         for (var i = 0; i < results.events.length; i++) {
 
-                            var eventName = "<td>" + results.events[i].name.text + "</td>";
+                            var eventURL = results.events[i].url;
+                            var eventName = "<td><a href='" + eventURL + 
+                                            "'>" + results.events[i].name.text + "</a></td>";
                             
                             var formattedStart = moment(results.events[i].start.local).format('LL');
                             var formattedEnd = moment(results.events[i].start.local).format('LL');
@@ -100,9 +104,12 @@
                             var eventStart = "<td>" + formattedStart + "</td>";
                             var eventEnd = "<td>" + formattedEnd + "</td>";
 
-                            $("#content").append("<tr>" + eventName + eventStart + eventEnd + "</tr>");
-                        }
+                            var eventCity = "<td>" + results.events[i].venue.address.city + "</td>";
+                            var eventAddress = "<td>" + results.events[i].venue.address.address_1 + "</td>";
 
+                            $("#content").append("<tr>" + eventName + eventStart + eventEnd + 
+                                eventCity + eventAddress + "</tr>");
+                        }
                         
                 }); 
             });

@@ -20,6 +20,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
                 $url = "https://www.eventbriteapi.com/v3/events/search?" .
                         "location.address=" . $city .
                         "&start_date.range_start=" . $date .
+                        "&expand=organizer,venue" . // for more event info
                         "&token=" . $key;
 
                 $data = callCurl($url);
