@@ -19,12 +19,27 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
                 // to show events up to a week after the selected date
                 $endDate = date('Y-m-d', strtotime($date. ' + 1 months')) . "T00:00:00";
 
-                $url = "https://www.eventbriteapi.com/v3/events/search?" .
+                // if category is not null, not sure if != "" is the same as !empty ?
+                if (isset($_POST['category']) && ($_POST['category']) != "") {
+
+                    $category = $_POST['category']; // should probably filter this
+                    $url = "https://www.eventbriteapi.com/v3/events/search?" .
                         "location.address=" . $city .
+                        "&categories=" . $category .
                         "&start_date.range_start=" . $date .
                         "&start_date.range_end=" . $endDate .
                         "&expand=organizer,venue" . // for more event info like the address
                         "&token=" . $key;
+                }
+                else {
+                    $url = "https://www.eventbriteapi.com/v3/events/search?" .
+                    "location.address=" . $city .
+                    "&start_date.range_start=" . $date .
+                    "&start_date.range_end=" . $endDate .
+                    "&expand=organizer,venue" . // for more event info like the address
+                    "&token=" . $key;
+                }
+                
 
                 $data = callCurl($url);
             

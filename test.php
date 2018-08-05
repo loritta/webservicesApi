@@ -116,6 +116,13 @@ $gmKey = "AIzaSyCgNEko9ehJ_d79NeRbZIPx5r0nX3NyeGE";
                     return;
                 }
 
+                var category = "";
+                // if a category is selected
+                if ( $("#selCat").val() != "") {
+                    category = $("#selCat").val();
+                }
+                
+
                 var city = $("#selCity").val();
                 var dateValue = $("#selDate").val();
                 // hard coding since were not taking time into account and this is the format the API wants
@@ -128,7 +135,8 @@ $gmKey = "AIzaSyCgNEko9ehJ_d79NeRbZIPx5r0nX3NyeGE";
                     data: {
                         action: "searchEvents",
                         selectedCity: city,
-                        selectedDate: date
+                        selectedDate: date,
+                        category : category
                     }
                 }).done(function(data){
                         
@@ -239,7 +247,7 @@ $gmKey = "AIzaSyCgNEko9ehJ_d79NeRbZIPx5r0nX3NyeGE";
                     var results = JSON.parse(data);
 
                     for (var i = 0; i < results.categories.length; i++) {
-                        $("#selCat").append("<option value='" + results.categories[i].name + "'>" +
+                        $("#selCat").append("<option value='" + results.categories[i].id + "'>" +
                         results.categories[i].name + "</option>");
                     }
 
