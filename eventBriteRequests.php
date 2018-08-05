@@ -25,6 +25,8 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 
                 $data = callCurl($url);
             
+                // i dont believe this is taking pagination into account
+                // there are a LOT of events, thousands per search, so keeping it a 1 page for now
             echo $data;
             }
             break;
