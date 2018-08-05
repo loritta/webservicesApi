@@ -51,11 +51,40 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
             }
             break;
 
-        // get all categories
+        // get all categories 
         case "eventCategories" :
 
             $url = "https://www.eventbriteapi.com/v3/categories" .
             "?token=" . $key;
+            
+            $data = callCurl($url);
+            echo $data;
+            break;
+
+        // get all events for the month
+        case "monthEvents" :
+
+            $city = ($_POST['selectedCity']);
+
+            $url = "https://www.eventbriteapi.com/v3/events/search?" .
+            "location.address=" . $city .
+            "&start_date.keyword=this_month" .
+            "&expand=organizer,venue" . // for more event info like the address
+            "&token=" . $key;
+            
+            $data = callCurl($url);
+            echo $data;
+            break;
+        
+        case "weekEvents" :
+
+            $city = ($_POST['selectedCity']);
+
+            $url = "https://www.eventbriteapi.com/v3/events/search?" .
+            "location.address=" . $city .
+            "&start_date.keyword=this_week" .
+            "&expand=organizer,venue" . // for more event info like the address
+            "&token=" . $key;
             
             $data = callCurl($url);
             echo $data;

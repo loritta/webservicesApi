@@ -44,7 +44,7 @@
 
         <h2>Select a City and Date</h2>
 
-        <p class="lead">Events starting after the selected date will be shown on the map</p>
+        <p class="lead">Ongoing events during the selected date will be shown</p>
 
         <label for="selCity">Select a City</label>
         <select id="selCity" name="selCity">
@@ -69,8 +69,10 @@
         
         <a href="" class="btn btn-primary" id="btnSearch">Search</a>
 
-        <br />
-        <a href="" class="btn btn-light" id="btnMonthEvents">See all events for this month</a>
+        <p class="lead">Quick Search</p>
+
+        <a href="" class="btn btn-light" id="btnWeekEvents">See events this week</a>
+        <a href="" class="btn btn-light" id="btnMonthEvents">See events this month</a>
 
         <!-- map container -->
         <div id="map" style="height: 700px; width: 100%;">
@@ -97,6 +99,95 @@
 
             loadCategories();
             
+            $( "#btnWeekEvents" ).click(function(event) {
+            
+                if ( $("#selCity").val() == "") {
+                    alert("Select a City");
+                    return;
+                }
+
+                event.preventDefault();
+
+                var city = $("#selCity").val();
+
+                $.ajax({
+                    url: 'eventBriteRequests.php',
+                    type: 'POST', // should probably be GET but coulndt get it to work with that yet
+                    dataType: "json",
+                    data: {
+                        action: "weekEvents",
+                        selectedCity: city,
+                        //category : category add this later
+                    } 
+                })
+                .done(function(data){
+                        
+                        var results = JSON.parse(data);
+
+                        var locations = [];
+
+                        for (var i = 0; i < results.events.length; i++) {
+
+                            locations[i] = [
+                                results.events[i].name.text ,
+                                results.events[i].venue.latitude,
+                                results.events[i].venue.longitude,
+                                results.events[i].url, // the url for the event
+                                //results.events[i].logo.url,
+                                ];
+                        }
+                        
+                        // center the map around the chosen city, yes its hard coded
+                        if (city == "Montreal") center = [45.5017, -73.5673];
+                        if (city == "Toronto") center = [43.6532, -79.3832];
+                        initMap(locations, center);
+                }); 
+            });
+
+            $( "#btnMonthEvents" ).click(function(event) {
+            
+                if ( $("#selCity").val() == "") {
+                    alert("Select a City");
+                    return;
+                }
+
+                event.preventDefault();
+
+                var city = $("#selCity").val();
+
+                $.ajax({
+                    url: 'eventBriteRequests.php',
+                    type: 'POST', // should probably be GET but coulndt get it to work with that yet
+                    dataType: "json",
+                    data: {
+                        action: "monthEvents",
+                        selectedCity: city,
+                        //category : category add this later
+                    } 
+                })
+                .done(function(data){
+                        
+                        var results = JSON.parse(data);
+
+                        var locations = [];
+
+                        for (var i = 0; i < results.events.length; i++) {
+
+                            locations[i] = [
+                                results.events[i].name.text ,
+                                results.events[i].venue.latitude,
+                                results.events[i].venue.longitude,
+                                results.events[i].url, // the url for the event
+                                //results.events[i].logo.url,
+                                ];
+                        }
+                        
+                        // center the map around the chosen city, yes its hard coded
+                        if (city == "Montreal") center = [45.5017, -73.5673];
+                        if (city == "Toronto") center = [43.6532, -79.3832];
+                        initMap(locations, center);
+                }); 
+            });
 
             $( "#btnSearch" ).click(function(event) {
             
