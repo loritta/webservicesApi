@@ -16,8 +16,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 
                 $city = ($_POST['selectedCity']);
                 $date = ($_POST['selectedDate']);
-                // to show events up to a week after the selected date
-                $endDate = date('Y-m-d', strtotime($date. ' + 1 months')) . "T00:00:00";
+
+                // to show events ending up to a month after the selected date            
+                //$endDate = date('Y-m-d', strtotime($date. ' + 1 months')) . "T00:00:00";
 
                 // if category is not null, not sure if != "" is the same as !empty ?
                 if (isset($_POST['category']) && ($_POST['category']) != "") {
@@ -26,16 +27,16 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
                     $url = "https://www.eventbriteapi.com/v3/events/search?" .
                         "location.address=" . $city .
                         "&categories=" . $category .
-                        "&start_date.range_start=" . $date .
-                        "&start_date.range_end=" . $endDate .
+                        //"&start_date.range_start=" . $startDate .
+                        "&start_date.range_end=" . $date .
                         "&expand=organizer,venue" . // for more event info like the address
                         "&token=" . $key;
                 }
                 else {
                     $url = "https://www.eventbriteapi.com/v3/events/search?" .
                     "location.address=" . $city .
-                    "&start_date.range_start=" . $date .
-                    "&start_date.range_end=" . $endDate .
+                    //"&start_date.range_start=" . $date .
+                    "&start_date.range_end=" . $date .
                     "&expand=organizer,venue" . // for more event info like the address
                     "&token=" . $key;
                 }

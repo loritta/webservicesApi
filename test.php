@@ -1,9 +1,3 @@
-<?php 
-
-$gmKey = "AIzaSyCgNEko9ehJ_d79NeRbZIPx5r0nX3NyeGE";
-
-?>
-
 
 <!DOCTYPE html>
 <html>
@@ -24,8 +18,9 @@ $gmKey = "AIzaSyCgNEko9ehJ_d79NeRbZIPx5r0nX3NyeGE";
         crossorigin="anonymous">
     </script>
 
-    <!-- moment js for date formatting -->
+    <!-- moment js for date formatting (not used)
     <script src="scripts/moment.js"></script>
+    -->
 
     <!-- google maps script -->
     <script async defer
@@ -153,25 +148,6 @@ $gmKey = "AIzaSyCgNEko9ehJ_d79NeRbZIPx5r0nX3NyeGE";
                                 results.events[i].url, // the url for the event
                                 //results.events[i].logo.url,
                                 ];
-                            
-                            // stuff below is to display to a table
-                            /*
-                            var eventURL = results.events[i].url;
-                            var eventName = "<td><a href='" + eventURL + 
-                                            "'>" + results.events[i].name.text + "</a></td>";
-                            
-                            var formattedStart = moment(results.events[i].start.local).format('LL');
-                            var formattedEnd = moment(results.events[i].start.local).format('LL');
-                            
-                            var eventStart = "<td>" + formattedStart + "</td>";
-                            var eventEnd = "<td>" + formattedEnd + "</td>";
-
-                            var eventCity = "<td>" + results.events[i].venue.address.city + "</td>";
-                            var eventAddress = "<td>" + results.events[i].venue.address.address_1 + "</td>";
-
-                            $("#content").append("<tr>" + eventName + eventStart + eventEnd + 
-                                eventCity + eventAddress + "</tr>");
-                                */
                         }
                         
                         // center the map around the chosen city, yes its hard coded
