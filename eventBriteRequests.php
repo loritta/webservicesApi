@@ -16,11 +16,14 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
 
                 $city = ($_POST['selectedCity']);
                 $date = ($_POST['selectedDate']);
+                // to show events up to a week after the selected date
+                $endDate = date('Y-m-d', strtotime($date. ' + 1 months')) . "T00:00:00";
 
                 $url = "https://www.eventbriteapi.com/v3/events/search?" .
                         "location.address=" . $city .
                         "&start_date.range_start=" . $date .
-                        "&expand=organizer,venue" . // for more event info
+                        "&start_date.range_end=" . $endDate .
+                        "&expand=organizer,venue" . // for more event info like the address
                         "&token=" . $key;
 
                 $data = callCurl($url);
@@ -28,7 +31,18 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
                 // i dont believe this is taking pagination into account
                 // there are a LOT of events, thousands per search, so keeping it a 1 page for now
             echo $data;
+
             }
+            break;
+
+        // get all categories
+        case "eventCategories" :
+
+            $url = "https://www.eventbriteapi.com/v3/categories" .
+            "?token=" . $key;
+            
+            $data = callCurl($url);
+            echo $data;
             break;
     }
 }

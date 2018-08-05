@@ -32,6 +32,14 @@ $gmKey = "AIzaSyCgNEko9ehJ_d79NeRbZIPx5r0nX3NyeGE";
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgNEko9ehJ_d79NeRbZIPx5r0nX3NyeGE">
         // really should not hard code the key here
     </script>
+
+    <!-- temporary location for these styles -->
+    <style>
+        .logoImage {
+            width: 100%;
+            height: 150px;
+        }
+    </style>
 </head>
 
 <body>
@@ -42,20 +50,35 @@ $gmKey = "AIzaSyCgNEko9ehJ_d79NeRbZIPx5r0nX3NyeGE";
         <h2>Select a City and Date</h2>
 
         <p class="lead">Events starting after the selected date will be shown on the map</p>
-        
-        <select id="selCity">
+
+        <label for="selCity">Select a City</label>
+        <select id="selCity" name="selCity">
             <option value="">Please Select a City</option>
             <option value="Montreal">Greater Montreal</option>
             <option value="Toronto">Toronto</option>
         </select>
+        
+        <br />
 
         <label for="date">Select a Date</label>
         <input type="date" name="date" id="selDate">
 
+        <br />
+
+        <label for="selCity">Select a Category (optional)</label>
+        <select id="selCat" name="selCat">
+            <option value="">See Categories</option>
+        </select>
+
+        <br />
+        
         <a href="" class="btn btn-primary" id="btnSearch">Search</a>
 
+        <br />
+        <a href="" class="btn btn-light" id="btnMonthEvents">See all events for this month</a>
+
         <!-- map container -->
-        <div id="map" style="height: 400px; width: 100%;">
+        <div id="map" style="height: 700px; width: 100%;">
 
         <!-- table for testing 
         <table class="table" id="content">
@@ -77,6 +100,8 @@ $gmKey = "AIzaSyCgNEko9ehJ_d79NeRbZIPx5r0nX3NyeGE";
 
             var baseUrl = "https://www.eventbriteapi.com/v3/events/search?";
 
+            loadCategories();
+            
 
             $( "#btnSearch" ).click(function(event) {
             
@@ -116,7 +141,9 @@ $gmKey = "AIzaSyCgNEko9ehJ_d79NeRbZIPx5r0nX3NyeGE";
                             locations[i] = [
                                 results.events[i].name.text ,
                                 results.events[i].venue.latitude,
-                                results.events[i].venue.longitude
+                                results.events[i].venue.longitude,
+                                results.events[i].url, // the url for the event
+                                //results.events[i].logo.url,
                                 ];
                             
                             // stuff below is to display to a table
@@ -178,8 +205,18 @@ $gmKey = "AIzaSyCgNEko9ehJ_d79NeRbZIPx5r0nX3NyeGE";
 
                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
                         return function() {
-                            infowindow.setContent(locations[i][0]);
+                            // this is what shows up when the map marker is clicked
+                            // locations[3] is the url to the event, locations [0] is the event name (defined above)
+                            // locations[4] is the image url for the logo
+                            infowindow.setContent(
+                                // for some extremely strange reasons, when searching montreal no logo
+                                // is returned, i have no idea why.
+                                //"<img src='" + locations[i][4] + "' class='logoImage' /> <br />" + 
+                                "<a href='" + locations[i][3] + "'>" + locations[i][0] +
+                                "</a>");
+                                                
                             infowindow.open(map, marker);
+
                         }
 
                     })
@@ -187,6 +224,27 @@ $gmKey = "AIzaSyCgNEko9ehJ_d79NeRbZIPx5r0nX3NyeGE";
                 }
             }
 
+            function loadCategories() {
+                // load categories when page is loaded             
+                $.ajax({
+                    url: 'eventBriteRequests.php',
+                    type: 'POST', 
+                    dataType: "json",
+                    data: {
+                        action: "eventCategories",
+                    }
+                })
+                .done(function(data){
+                            
+                    var results = JSON.parse(data);
+
+                    for (var i = 0; i < results.categories.length; i++) {
+                        $("#selCat").append("<option value='" + results.categories[i].name + "'>" +
+                        results.categories[i].name + "</option>");
+                    }
+
+                }); 
+            }
         });
         
     </script>
