@@ -3,14 +3,16 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Page Title</title>
+    <title>Event's map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="main.css" />
 
     <!-- bootstrap cdns -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl" crossorigin="anonymous"></script>
 
-    
+
     <!-- jQuery -->
     <script
         src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -40,46 +42,65 @@
 </head>
 
 <body>
-    <div class="container">
-
-        <h1>Testing Event Brite API</h1>
-
-        <h2>Select a City and Date</h2>
-
+<section>
+        <div class="searchCity">
+        <h1>Testing Event Brite API with Google Maps API</h1>
         <p class="lead">Ongoing events during the selected date will be shown</p>
+        <table>
+        <tr>
+        <td>
+        <label for="city">Choose a city: </label>
+        </td>
+        <td>
+            <select id="selCity">
+                <option value="">Please Select a City</option>
+                <option value="Montreal">Greater Montreal</option>
+                <option value="Toronto">Toronto</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="date">Select a Date: </label>
+        </td>
 
-        <label for="selCity">Select a City</label>
-        <select id="selCity" name="selCity">
-            <option value="">Please Select a City</option>
-            <option value="Montreal">Greater Montreal</option>
-            <option value="Toronto">Toronto</option>
-        </select>
-        
-        <br />
-
-        <label for="date">Select a Date</label>
-        <input type="date" name="date" id="selDate">
-
-        <br />
-
-        <label for="selCity">Select a Category (optional)</label>
-        <select id="selCat" name="selCat">
-            <option value="">See Categories</option>
-        </select>
-
-        <br />
-        
-        <a href="" class="btn btn-primary" id="btnSearch">Search</a>
-
-        <p class="lead">Quick Search</p>
-
+        <td>
+            <input type="date" name="date" id="selDate">
+        </td>
+        <td>
         <a href="" class="btn btn-light" id="btnWeekEvents">See events this week</a>
-        <a href="" class="btn btn-light" id="btnMonthEvents">See events this month</a>
+        </td>
+        <td>
+            <a href="" class="btn btn-light" id="btnMonthEvents">See events this month</a>
+        </td>
 
+    </tr>
+    <tr>
+        <td>
+            <label for="selCity">Select a Category (optional): </label>
+        </td>
+
+        <td>
+            <select id="selCat" name="selCat">
+                <option value="">Please Select a Category</option>
+            </select>
+        </td>
+
+    </tr>
+    <tr>
+
+        <td>
+            <a href="" class="btn btn-primary" id="btnSearch">Search</a>
+            <span class="lead">Quick Search</span>
+        </td>
+
+    </tr>
+    </table>
+</div>
         <!-- map container -->
-        <div id="map" style="height: 700px; width: 100%;">
+        <div id="map">
 
-        <!-- table for testing 
+        <!-- table for testing
         <table class="table" id="content">
             <tr>
                 <th>Event Name</th>
@@ -88,11 +109,11 @@
                 <th>City</th>
                 <th>Address</th>
             </tr>
-            
+
         </table>
         -->
     </div>
-    
+</section>
 
     <script>
         $( document ).ready(function() {
@@ -100,9 +121,9 @@
             var baseUrl = "https://www.eventbriteapi.com/v3/events/search?";
 
             loadCategories();
-            
+
             $( "#btnWeekEvents" ).click(function(event) {
-            
+
                 if ( $("#selCity").val() == "") {
                     alert("Select a City");
                     return;
@@ -120,10 +141,10 @@
                         action: "weekEvents",
                         selectedCity: city,
                         //category : category add this later
-                    } 
+                    }
                 })
                 .done(function(data){
-                        
+
                         var results = JSON.parse(data);
 
                         var locations = [];
@@ -147,7 +168,7 @@
                                     results.events[i].name.text,
                                     results.events[i].venue.latitude,
                                     results.events[i].venue.longitude,
-                                    results.events[i].url, 
+                                    results.events[i].url,
                                     results.events[i].logo.url,
                                     results.events[i].start.local, // start date
                                     results.events[i].end.local, // end date
@@ -155,16 +176,16 @@
                                 ];
                             }
                         }
-                        
+
                         // center the map around the chosen city, yes its hard coded
                         if (city == "Montreal") center = [45.5017, -73.5673];
                         if (city == "Toronto") center = [43.6532, -79.3832];
                         initMap(locations, center);
-                }); 
+                });
             });
 
             $( "#btnMonthEvents" ).click(function(event) {
-            
+
                 if ( $("#selCity").val() == "") {
                     alert("Select a City");
                     return;
@@ -182,10 +203,10 @@
                         action: "monthEvents",
                         selectedCity: city,
                         //category : category add this later
-                    } 
+                    }
                 })
                 .done(function(data){
-                        
+
                         var results = JSON.parse(data);
 
                         var locations = [];
@@ -209,7 +230,7 @@
                                     results.events[i].name.text,
                                     results.events[i].venue.latitude,
                                     results.events[i].venue.longitude,
-                                    results.events[i].url, 
+                                    results.events[i].url,
                                     results.events[i].logo.url,
                                     results.events[i].start.local, // start date
                                     results.events[i].end.local, // end date
@@ -217,16 +238,16 @@
                                 ];
                             }
                         }
-                        
+
                         // center the map around the chosen city, yes its hard coded
                         if (city == "Montreal") center = [45.5017, -73.5673];
                         if (city == "Toronto") center = [43.6532, -79.3832];
                         initMap(locations, center);
-                }); 
+                });
             });
 
             $( "#btnSearch" ).click(function(event) {
-            
+
                 event.preventDefault(); // to stop the page from refreshing after the click
 
                 if ( $("#selCity").val() == "") {
@@ -243,7 +264,7 @@
                 if ( $("#selCat").val() != "") {
                     category = $("#selCat").val();
                 }
-                
+
 
                 var city = $("#selCity").val();
                 var dateValue = $("#selDate").val();
@@ -261,14 +282,14 @@
                         category : category
                     }
                 }).done(function(data){
-                        
+
                         var results = JSON.parse(data);
 
                         var locations = [];
 
                         for (var i = 0; i < results.events.length; i++) {
 
-                            
+
                             if (results.events[i].logo == null) {
                                 locations[i] = [
                                     results.events[i].name.text,
@@ -286,26 +307,26 @@
                                     results.events[i].name.text,
                                     results.events[i].venue.latitude,
                                     results.events[i].venue.longitude,
-                                    results.events[i].url, 
+                                    results.events[i].url,
                                     results.events[i].logo.url,
                                     results.events[i].start.local, // start date
                                     results.events[i].end.local, // end date
                                     results.events[i].description.text
                                 ];
                             }
-                            
+
                         }
-                        
+
                         // center the map around the chosen city, yes its hard coded
                         if (city == "Montreal") center = [45.5017, -73.5673];
                         if (city == "Toronto") center = [43.6532, -79.3832];
                         initMap(locations, center);
-                }); 
+                });
             });
 
             // initialize the map
             function initMap(locations, center) {
-                
+
                 var map = new google.maps.Map(document.getElementById('map'), {
                     zoom: 10,
                     center: new google.maps.LatLng(center[0], center[1]),
@@ -316,8 +337,8 @@
 
                 var marker, i;
 
-                for (i = 0; i < locations.length; i++) { 
-                    
+                for (i = 0; i < locations.length; i++) {
+
                     marker = new google.maps.Marker({
                         position: new google.maps.LatLng(locations[i][1], locations[i][2]),
                         map: map
@@ -342,14 +363,14 @@
                             if (description.length > 200) {
                                 description = description.substring(0, 500) + "...";
                             }
-                            
+
                             // if theres no logo
                             if (locations[i][4] == "") {
-                                infowindow.setContent(                              
-                                
-                                "<div class='container-fluid text-center'>" +                                                         
+                                infowindow.setContent(
+
+                                "<div class='container-fluid text-center'>" +
                                 "<p class='lead m-3'><a href='" + locations[i][3] + "'>" + locations[i][0] +
-                                "</a></p>" + 
+                                "</a></p>" +
                                 "<p>" + description + "</p>" +
                                 "<p>Start Date: " + startDate + "</p>" +
                                 "<p>End Date: " + endDate + "</p>" +
@@ -357,15 +378,15 @@
                             }
                             else {
                                 infowindow.setContent(
-                                "<div class='container-fluid text-center'>" +                                                         
-                                "<img src='" + locations[i][4] + "' class='img-fluid' /> <br />" + 
+                                "<div class='container-fluid text-center'>" +
+                                "<img src='" + locations[i][4] + "' class='img-fluid' /> <br />" +
                                 "<p class='lead m-3'><a href='" + locations[i][3] + "'>" + locations[i][0] +
                                 "</a><p>" + description + "</p>" +
                                 "<p>Start Date: " + startDate + "</p>" +
                                 "<p>End Date: " + endDate + "</p>" +
                                 "</div>");
                             }
-                                                
+
                             infowindow.open(map, marker);
 
                         }
@@ -376,17 +397,17 @@
             }
 
             function loadCategories() {
-                // load categories when page is loaded             
+                // load categories when page is loaded
                 $.ajax({
                     url: 'eventBriteRequests.php',
-                    type: 'POST', 
+                    type: 'POST',
                     dataType: "json",
                     data: {
                         action: "eventCategories",
                     }
                 })
                 .done(function(data){
-                            
+
                     var results = JSON.parse(data);
 
                     for (var i = 0; i < results.categories.length; i++) {
@@ -394,10 +415,10 @@
                         results.categories[i].name + "</option>");
                     }
 
-                }); 
+                });
             }
         });
-        
+
     </script>
 
 

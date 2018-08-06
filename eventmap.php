@@ -6,6 +6,17 @@
 // as well as the address you plan to Iframe
 // Don't forget to get a Google Maps API key
 
+
+//This has to be changed according to the EventBrite API
+$base_url =  "https://www.eventbriteapi.com/v3";
+$categories = fetch_curl($base_url . 'categories');
+$city = fetch_curl($base_url.'city');
+$date = fetch_curl($base_url.'date');
+
+//need to verify and adjust the code
+$city_search = ($_SERVER['REQUEST_METHOD'] == "POST") ? $_POST['city'] : "";
+
+
 $latitude = '';
 $longitude = '';
 $iframe_width = '100vw';
@@ -69,6 +80,19 @@ http://maps.google.com/maps
   </tr>
   <tr>
     <td>
+        <label for="date">Please choose the category:</label>
+    </td>
+    <td>
+        <select name="event">
+            <option value="">---</option>
+            <?php foreach ($categories as $category){ ?>
+                <option value="<?= $category; ?>" <?= $eventSearch==$category?"selected":""; ?> ><?=$category; ?></option>
+            <?php }//endloop categories dropdown ?>
+        </select>
+    </td>
+  </tr>
+  <tr>
+    <td>
         <label for="date">Please enter the date:</label>
     </td>
     <td>
@@ -90,3 +114,29 @@ http://maps.google.com/maps
 
 </body>
 </html>
+
+
+<?php
+//need to be adjusted according to the search option we want
+if ($_SERVER['REQUEST_METHOD'] == "POST"){
+
+  //check that category is in the list
+  if (in_array($cat_search, $categories)){
+    // request a random fact for selected category
+    $chuck = fetch_curl($base_url . 'random?category='.$_POST['cat']);
+
+    //display category as title if there is a category
+    if (!empty($chuck->category)){
+      echo "<h3>";
+      foreach ($chuck->category as $i =>$c) echo ($i!=0?", ":"") . ucfirst($c);
+      echo "</h3>";
+    } //endif !empty categories
+
+    //display information about the random fact
+    echo "<img src='$chuck->icon_url' style='float:left' alt='Chuck Norris Facts' />";
+    echo $chuck->value;
+
+  } //endif in_array()
+
+}//endif POST request method
+?>

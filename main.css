@@ -7,13 +7,25 @@ iframe{
 label,input{
     font-size: 20px;
 }
+section{
+    margin: 5px;
+    padding: 5px;
+}
 
-
+#map{
+    width:98vw;
+    height:80vh;
+    margin:5px;
+    padding:20px;
+    border:1px;
+    border-style: solid;
+    border-color: grey;
+}
 .searchCity{
 margin:5px;
 padding:20px;
 border:1px;
 border-style: solid;
 border-color: grey;
-background-color: yellow;
+background-color: beige;
 }
