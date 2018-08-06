@@ -43,11 +43,13 @@
 
 <body>
 <section>
-        <div class="searchCity">
-        <h1>Testing Event Brite API with Google Maps API</h1>
-        <p class="lead">Ongoing events during the selected date will be shown</p>
-        <table>
-        <tr>
+    <div class="searchCity">
+    <h1>Testing Event Brite API with Google Maps API</h1>
+    <p class="lead">Ongoing events during the selected date will be shown</p>
+    <table>
+
+
+    <tr>
         <td>
         <label for="city">Choose a city: </label>
         </td>
@@ -56,8 +58,10 @@
                 <option value="">Please Select a City</option>
                 <option value="Montreal">Greater Montreal</option>
                 <option value="Toronto">Toronto</option>
+                <option value="Ottawa">Ottawa</option>
             </select>
         </td>
+       
     </tr>
     <tr>
         <td>
@@ -67,12 +71,8 @@
         <td>
             <input type="date" name="date" id="selDate">
         </td>
-        <td>
-        <a href="" class="btn btn-light" id="btnWeekEvents">See events this week</a>
-        </td>
-        <td>
-            <a href="" class="btn btn-light" id="btnMonthEvents">See events this month</a>
-        </td>
+        
+        
 
     </tr>
     <tr>
@@ -88,10 +88,18 @@
 
     </tr>
     <tr>
-
         <td>
             <a href="" class="btn btn-primary" id="btnSearch">Search</a>
-            <span class="lead">Quick Search</span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <span class="lead">Quick Search :</span>
+        </td>
+        <td>
+        <a href="" class="btn btn-light" id="btnWeekEvents">See events this week</a>
+        <a href="" class="btn btn-light" id="btnMonthEvents">See events this month</a>
         </td>
 
     </tr>
@@ -180,6 +188,8 @@
                         // center the map around the chosen city, yes its hard coded
                         if (city == "Montreal") center = [45.5017, -73.5673];
                         if (city == "Toronto") center = [43.6532, -79.3832];
+                        if (city == "Ottawa") center = [45.4215, -75.6972];
+
                         initMap(locations, center);
                 });
             });
@@ -417,6 +427,30 @@
 
                 });
             }
+
+            /* not done yet
+            function loadProvinces(province) {
+                // load categories when page is loaded
+                $.ajax({
+                    url: 'eventBriteRequests.php',
+                    type: 'POST',
+                    dataType: "json",
+                    data: {
+                        action: "eventProvinces",
+                    }
+                })
+                .done(function(data){
+
+                    var results = JSON.parse(data);
+
+                    for (var i = 0; i < results.events.length; i++) {
+                        $("#selProv").append("<option value='" + results.events[i].venue.address.region + "'>" +
+                        results.categories[i].name + "</option>");
+                    }
+
+                });
+            }
+            */
         });
 
     </script>

@@ -1,7 +1,7 @@
 iframe{
     width:100vw;
     height:80vh;
-    frameborder:0;
+    frameborder: 0;
     border:0;
 }
 label,input{
@@ -17,15 +17,14 @@ section{
     height:80vh;
     margin:5px;
     padding:20px;
-    border:1px;
-    border-style: solid;
-    border-color: grey;
+
 }
 .searchCity{
 margin:5px;
 padding:20px;
-border:1px;
-border-style: solid;
+background-color: rgba(166, 159, 152, 0.2);
+/*
 border-color: grey;
 background-color: beige;
+*/
 }
