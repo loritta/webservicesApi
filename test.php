@@ -29,12 +29,14 @@
     </script>
 
     <!-- temporary location for these styles -->
+    <!--
     <style>
         .logoImage {
             width: 100%;
             height: 150px;
         }
     </style>
+    -->
 </head>
 
 <body>
@@ -128,13 +130,30 @@
 
                         for (var i = 0; i < results.events.length; i++) {
 
-                            locations[i] = [
-                                results.events[i].name.text ,
-                                results.events[i].venue.latitude,
-                                results.events[i].venue.longitude,
-                                results.events[i].url, // the url for the event
-                                //results.events[i].logo.url,
+                            if (results.events[i].logo == null) {
+                                locations[i] = [
+                                    results.events[i].name.text,
+                                    results.events[i].venue.latitude,
+                                    results.events[i].venue.longitude,
+                                    results.events[i].url, // the url for the event
+                                    "", // this is to save headaches
+                                    results.events[i].start.local, // start date
+                                    results.events[i].end.local, // end date
+                                    results.events[i].description.text
                                 ];
+                            }
+                            else {
+                                locations[i] = [
+                                    results.events[i].name.text,
+                                    results.events[i].venue.latitude,
+                                    results.events[i].venue.longitude,
+                                    results.events[i].url, 
+                                    results.events[i].logo.url,
+                                    results.events[i].start.local, // start date
+                                    results.events[i].end.local, // end date
+                                    results.events[i].description.text
+                                ];
+                            }
                         }
                         
                         // center the map around the chosen city, yes its hard coded
@@ -173,13 +192,30 @@
 
                         for (var i = 0; i < results.events.length; i++) {
 
-                            locations[i] = [
-                                results.events[i].name.text ,
-                                results.events[i].venue.latitude,
-                                results.events[i].venue.longitude,
-                                results.events[i].url, // the url for the event
-                                //results.events[i].logo.url,
+                            if (results.events[i].logo == null) {
+                                locations[i] = [
+                                    results.events[i].name.text,
+                                    results.events[i].venue.latitude,
+                                    results.events[i].venue.longitude,
+                                    results.events[i].url, // the url for the event
+                                    "", // this is to save headaches
+                                    results.events[i].start.local, // start date
+                                    results.events[i].end.local, // end date
+                                    results.events[i].description.text
                                 ];
+                            }
+                            else {
+                                locations[i] = [
+                                    results.events[i].name.text,
+                                    results.events[i].venue.latitude,
+                                    results.events[i].venue.longitude,
+                                    results.events[i].url, 
+                                    results.events[i].logo.url,
+                                    results.events[i].start.local, // start date
+                                    results.events[i].end.local, // end date
+                                    results.events[i].description.text
+                                ];
+                            }
                         }
                         
                         // center the map around the chosen city, yes its hard coded
@@ -232,13 +268,32 @@
 
                         for (var i = 0; i < results.events.length; i++) {
 
-                            locations[i] = [
-                                results.events[i].name.text ,
-                                results.events[i].venue.latitude,
-                                results.events[i].venue.longitude,
-                                results.events[i].url, // the url for the event
-                                //results.events[i].logo.url,
+                            
+                            if (results.events[i].logo == null) {
+                                locations[i] = [
+                                    results.events[i].name.text,
+                                    results.events[i].venue.latitude,
+                                    results.events[i].venue.longitude,
+                                    results.events[i].url, // the url for the event
+                                    "", // this is to save headaches
+                                    results.events[i].start.local, // start date
+                                    results.events[i].end.local, // end date
+                                    results.events[i].description.text
                                 ];
+                            }
+                            else {
+                                locations[i] = [
+                                    results.events[i].name.text,
+                                    results.events[i].venue.latitude,
+                                    results.events[i].venue.longitude,
+                                    results.events[i].url, 
+                                    results.events[i].logo.url,
+                                    results.events[i].start.local, // start date
+                                    results.events[i].end.local, // end date
+                                    results.events[i].description.text
+                                ];
+                            }
+                            
                         }
                         
                         // center the map around the chosen city, yes its hard coded
@@ -248,19 +303,9 @@
                 }); 
             });
 
-            // test map function
+            // initialize the map
             function initMap(locations, center) {
                 
-                /*
-                var locations = [
-                    ['Bondi Beach', -33.890542, 151.274856, 4],
-                    ['Coogee Beach', -33.923036, 151.259052, 5],
-                    ['Cronulla Beach', -34.028249, 151.157507, 3],
-                    ['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
-                    ['Maroubra Beach', -33.950198, 151.259302, 1]
-                ];
-                */
-
                 var map = new google.maps.Map(document.getElementById('map'), {
                     zoom: 10,
                     center: new google.maps.LatLng(center[0], center[1]),
@@ -283,12 +328,43 @@
                             // this is what shows up when the map marker is clicked
                             // locations[3] is the url to the event, locations [0] is the event name (defined above)
                             // locations[4] is the image url for the logo
-                            infowindow.setContent(
-                                // for some extremely strange reasons, when searching montreal no logo
-                                // is returned, i have no idea why.
-                                //"<img src='" + locations[i][4] + "' class='logoImage' /> <br />" + 
-                                "<a href='" + locations[i][3] + "'>" + locations[i][0] +
-                                "</a>");
+                            // locations[5] and [6] are the start and end dates
+                            // the last element in the array is the event description
+
+                            var startDateObj = new Date(locations[i][5]);
+                            var startDate = startDateObj.toDateString();
+
+                            var endDateObj = new Date(locations[i][6]);
+                            var endDate = endDateObj.toDateString();
+
+                            var description = locations[i][locations[i].length-1];
+                            // because the descriptions are way too long.
+                            if (description.length > 200) {
+                                description = description.substring(0, 500) + "...";
+                            }
+                            
+                            // if theres no logo
+                            if (locations[i][4] == "") {
+                                infowindow.setContent(                              
+                                
+                                "<div class='container-fluid text-center'>" +                                                         
+                                "<p class='lead m-3'><a href='" + locations[i][3] + "'>" + locations[i][0] +
+                                "</a></p>" + 
+                                "<p>" + description + "</p>" +
+                                "<p>Start Date: " + startDate + "</p>" +
+                                "<p>End Date: " + endDate + "</p>" +
+                                "</div>");
+                            }
+                            else {
+                                infowindow.setContent(
+                                "<div class='container-fluid text-center'>" +                                                         
+                                "<img src='" + locations[i][4] + "' class='img-fluid' /> <br />" + 
+                                "<p class='lead m-3'><a href='" + locations[i][3] + "'>" + locations[i][0] +
+                                "</a><p>" + description + "</p>" +
+                                "<p>Start Date: " + startDate + "</p>" +
+                                "<p>End Date: " + endDate + "</p>" +
+                                "</div>");
+                            }
                                                 
                             infowindow.open(map, marker);
 
