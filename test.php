@@ -56,8 +56,11 @@
                 <option value="">Please Select a City</option>
                 <option value="Montreal">Greater Montreal</option>
                 <option value="Toronto">Toronto</option>
+                <option value="Ottawa">Ottawa</option>
             </select>
         </td>
+
+        
     </tr>
     <tr>
         <td>
@@ -67,12 +70,8 @@
         <td>
             <input type="date" name="date" id="selDate">
         </td>
-        <td>
-        <a href="" class="btn btn-light" id="btnWeekEvents">See events this week</a>
-        </td>
-        <td>
-            <a href="" class="btn btn-light" id="btnMonthEvents">See events this month</a>
-        </td>
+        
+        
 
     </tr>
     <tr>
@@ -88,10 +87,18 @@
 
     </tr>
     <tr>
-
         <td>
             <a href="" class="btn btn-primary" id="btnSearch">Search</a>
-            <span class="lead">Quick Search</span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <span class="lead">Quick Search :</span>
+        </td>
+        <td>
+        <a href="" class="btn btn-light" id="btnWeekEvents">See events this week</a>
+        <a href="" class="btn btn-light" id="btnMonthEvents">See events this month</a>
         </td>
 
     </tr>
@@ -180,6 +187,8 @@
                         // center the map around the chosen city, yes its hard coded
                         if (city == "Montreal") center = [45.5017, -73.5673];
                         if (city == "Toronto") center = [43.6532, -79.3832];
+                        if (city == "Ottawa") center = [45.4215, -75.6972];
+
                         initMap(locations, center);
                 });
             });
