@@ -1,3 +1,4 @@
+<?php include_once "keys.php"; ?>
 
 <!DOCTYPE html>
 <html>
@@ -26,7 +27,7 @@
 
     <!-- google maps script -->
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgNEko9ehJ_d79NeRbZIPx5r0nX3NyeGE">
+        src="https://maps.googleapis.com/maps/api/js?key=<?php $keyMap?>">
         // really should not hard code the key here
     </script>
 

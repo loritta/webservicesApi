@@ -1,8 +1,9 @@
 <?php 
+include_once "keys.php"; 
 
 if(isset($_POST['action']) && !empty($_POST['action'])) {
 
-    $key = "Z4VLAA2WR46NYITW6TXU";
+   
 
     $action = $_POST['action'];
 
