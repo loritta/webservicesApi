@@ -1,4 +1,6 @@
-<?php include_once "keys.php"; ?>
+<?php 
+$keyMap = "AIzaSyCgNEko9ehJ_d79NeRbZIPx5r0nX3NyeGE";
+?>
 
 <!DOCTYPE html>
 <html>

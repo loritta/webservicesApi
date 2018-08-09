@@ -1,5 +1,5 @@
 <?php 
-include_once "keys.php"; 
+$key = "Z4VLAA2WR46NYITW6TXU";
 
 if(isset($_POST['action']) && !empty($_POST['action'])) {
 
